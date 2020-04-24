@@ -1,5 +1,4 @@
 flask
 flask_restful
 db-sqlite3
-pyOpenSSL
-secrets
+secret
