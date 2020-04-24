@@ -1,3 +1,4 @@
 doctest
 .DS_Store
 __pycache__
+wardrums.db
