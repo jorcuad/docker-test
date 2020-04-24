@@ -20,6 +20,7 @@ def get_db():
         db = g._database = sqlite3.connect(DATABASE)
     return db
 
+#TODO REMOVE IN PROD
 def init_testData():
     with app.app_context():
         db = get_db()
@@ -45,6 +46,29 @@ def init_testData():
         db.cursor().executemany("INSERT INTO rooms VALUES(?, ?, ?)", rooms)
         db.cursor().executemany("INSERT INTO user_rooms VALUES(?, ?)", user_rooms)
         db.commit()
+
+#TODO REMOVE IN PROD
+@app.route('/reset', methods=['GET'])
+def erase_db():
+    with app.app_context():
+        try:
+            db = get_db()
+            db.cursor().execute('DELETE FROM rooms')
+            db.cursor().execute('DELETE FROM users')
+            db.cursor().execute('DELETE FROM user_rooms')
+            db.commit()
+            return Response(status=201)
+        except Exception as e:
+            abort(500, description=e)
+
+#TODO REMOVE IN PROD
+@app.route('/dummy', methods=['GET'])
+def reset_testData():
+    try:
+        init_testData()
+        return Response(status=201)
+    except Exception as e:
+        abort(500, description=e)
 
 def init_db():
     with app.app_context():
@@ -124,5 +148,5 @@ def index():
 
 if __name__ == '__main__':
     init_db()
-    init_testData()
+    #init_testData()
     app.run(host='0.0.0.0')
