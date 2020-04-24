@@ -3,7 +3,7 @@ import sqlite3
 import datetime
 import secrets
 
-from flask import g, Flask, Response, abort, request
+from flask import g, Flask, Response, abort, request, jsonify
 app = Flask(__name__)
 
 DATABASE = './bd/wardrums.db'
@@ -113,6 +113,49 @@ def create_user():
 @app.route(USERS_API+'/update', methods=['POST'])
 def update_user():
     return "Not implemented yet."
+
+@app.route(USERS_API, methods=['GET'])
+def list_users():
+    try:
+        db = get_db()
+        users_cursor = db.cursor().execute("SELECT * FROM users")
+        users = []
+        for user_cursor in users_cursor.fetchall():
+            user = {'name': user_cursor[1] ,'mail': user_cursor[3], 'id': user_cursor[0], 'birthday': user_cursor[2]}
+            users.append(user)
+        return jsonify(users)
+    except Exception as e:
+        abort(500, description="Error retrieving users.")
+
+@app.route(ROOMS_API, methods=['GET'])
+def list_rooms():
+    try:
+        db = get_db()
+        rooms_cursor = db.cursor().execute("SELECT * FROM rooms")
+        rooms = []
+        for room_cursor in rooms_cursor.fetchall():
+            room = {'capacity': room_cursor[1] ,'duration': room_cursor[2], 'id': room_cursor[0]}
+            rooms.append(room)
+        return jsonify(rooms)
+    except Exception as e:
+        abort(500, description="Error retrieving rooms.")
+
+@app.route(ROOMS_API+"/<roomid>", methods=['GET'])
+def list_room_joins(roomid):
+    try:
+        db = get_db()
+        joins_cursor = db.cursor().execute("SELECT * FROM user_rooms where room_id=? ", roomid)
+        joined = []
+        for join in joins_cursor.fetchall():
+            joined.append(join[0])
+        room_cursor = db.cursor().execute("SELECT * FROM rooms where room_id=? ", roomid)
+        roomraw = room_cursor.fetchone()
+
+        room = {'joined': joined, 'id': roomraw[0], 'capacity': roomraw[1], 'duration': roomraw[2]}
+
+        return jsonify(room)
+    except Exception as e:
+        abort(500, description=e)
 
 @app.route(ROOMS_API+'/create', methods=['POST'])
 def create_room():
