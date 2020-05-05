@@ -8,6 +8,6 @@ RUN pip install -r requirements.txt
 
 RUN export FLASK_APP=app.py
 
-ENTRYPOINT ["python"]
+ENTRYPOINT ["flask"]
 
-CMD ["app.py"]
+CMD ["run"]
