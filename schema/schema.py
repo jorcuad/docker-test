@@ -15,7 +15,9 @@ class Schema:
         	email TEXT NOT NULL UNIQUE,
         	password_hash TEXT NOT NULL,
         	birthday TEXT NOT NULL,
-        	creation_date TEXT NOT NULL
+        	creation_date TEXT NOT NULL,
+            active TEXT NOT NULL,
+            desactivation_date TEXT
         );
         """
         self.conn.execute(query)
@@ -25,14 +27,15 @@ class Schema:
         CREATE TABLE if not exists rooms (
            room_id INTEGER PRIMARY KEY,
            capacity INTEGER NOT NULL,
-        	 turn_duration INTEGER NOT NULL
+           turn_duration INTEGER NOT NULL,
+           creation_date TEXT NOT NULL
         );
         """
         self.conn.execute(query)
 
     def create_room_users_table(self):
         query = """
-        CREATE TABLE if not exists user_rooms(
+        CREATE TABLE if not exists joins(
            user_id INTEGER,
            room_id INTEGER,
            PRIMARY KEY (user_id, room_id),

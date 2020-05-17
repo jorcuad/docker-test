@@ -3,3 +3,6 @@ flask_restful
 db-sqlite3
 secret
 Flask-SQLAlchemy
+flask-sqlalchemy
+flask_marshmallow
+marshmallow-sqlalchemy

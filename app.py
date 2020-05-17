@@ -4,7 +4,9 @@ from flask_restful import Resource, Api
 from models.models import db
 from schema.schema import Schema
 import datetime
-from api.users import UsersAPI, UsersListAPI
+from api.users import UsersAPI
+from api.rooms import RoomsAPI
+from api.join import JoinAPI
 
 app = Flask(__name__)
 
@@ -18,10 +20,12 @@ VERSION = '/v1'
 API = '/api'
 USERS_API = API + VERSION + '/users'
 ROOMS_API = API + VERSION + '/rooms'
+JOIN_API = API + VERSION + '/join'
 
 api = Api(app)
-api.add_resource(UsersListAPI, USERS_API+'/')
-api.add_resource(UsersAPI, USERS_API+'/<id>')
+api.add_resource(UsersAPI, USERS_API+'/', USERS_API+'/<id>')
+api.add_resource(RoomsAPI, ROOMS_API+'/', ROOMS_API+'/<id>')
+api.add_resource(JoinAPI, JOIN_API)
 
 if __name__ == "__main__":
     Schema()
