@@ -32,11 +32,15 @@ class JoinAPI(Resource):
         try:
             args = parser.parse_args()
             room = Room.query.get(int(args['room_id']))
+            user = User.query.get(int(args['user_id']))
 
             if room is None:
                 abort(404, "Room not found.")
+            if user is None:
+                abort(404, "User not found.")
 
-            room.delete()
+            room.users.remove(user)
+            room.update()
             return 200
         except:
             abort(500, description="Error deleting room.")

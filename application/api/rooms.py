@@ -8,7 +8,7 @@ from application.models.room import Room
 parser = reqparse.RequestParser()
 parser.add_argument('capacity')
 parser.add_argument('turn_duration')
-parser.add_argument('room_id')
+parser.add_argument('id')
 
 class RoomsAPI(Resource):
 
@@ -37,7 +37,7 @@ class RoomsAPI(Resource):
     def delete(self):
         try:
             args = parser.parse_args()
-            room = Room.query.get(int(args['room_id']))
+            room = Room.query.get(int(args['id']))
 
             if room is None:
                 abort(404, "Room not found.")

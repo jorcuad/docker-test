@@ -10,7 +10,7 @@ parser.add_argument('username')
 parser.add_argument('email')
 parser.add_argument('password_hash')
 parser.add_argument('birthday')
-parser.add_argument('user_id')
+parser.add_argument('id')
 
 class UsersAPI(Resource):
 
@@ -42,7 +42,7 @@ class UsersAPI(Resource):
         try:
             args = parser.parse_args()
 
-            user = User.query.get(int(args['user_id']))
+            user = User.query.get(int(args['id']))
 
             if user is None:
                 abort(404, "User not found.")
@@ -68,7 +68,7 @@ class UsersAPI(Resource):
     def delete(self):
         try:
             args = parser.parse_args()
-            user = User.query.get(int(args['user_id']))
+            user = User.query.get(int(args['id']))
 
             if user is None:
                 abort(404, "User not found.")
