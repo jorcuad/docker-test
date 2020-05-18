@@ -1,8 +1,8 @@
-from models.models import db
-from models.join import Join
-from models.user import UserSchema
-from schema.schemas import RoomSchema
 import datetime
+from sqlalchemy.orm import relationship
+
+from application import db
+from application.schema.schemas import RoomSchema
 
 DAY = 86400
 
@@ -12,13 +12,20 @@ def dump_datetime(value):
         return None
     return value.strftime("%Y-%m-%d %H:%M:%S")
 
+association_table = db.Table('joins', db.metadata,
+    db.Column('room_id', db.Integer, db.ForeignKey('rooms.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+)
+
 class Room(db.Model):
     __tablename__ = 'rooms'
-    room_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     capacity = db.Column(db.Integer, nullable=False, default=4)
     turn_duration = db.Column(db.Integer, nullable=False, default=DAY)
     creation_date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
-    users = db.relationship('User', secondary="joins", lazy='subquery', load_on_pending=True, backref=db.backref('rooms'))
+    users = relationship("User",
+                    secondary=association_table,
+                    backref="rooms")
 
     @property
     def serialize(self):

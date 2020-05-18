@@ -1,7 +1,7 @@
-from models.models import db
-from schema.schemas import UserSchema
 import datetime
-from sqlalchemy.orm import relationship
+
+from application import db
+from application.schema.schemas import UserSchema
 
 def dump_datetime(value):
     """Deserialize datetime object into string form for JSON processing."""
@@ -11,7 +11,7 @@ def dump_datetime(value):
 
 class User(db.Model):
     __tablename__ = 'users'
-    user_id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), unique=False, nullable=False)

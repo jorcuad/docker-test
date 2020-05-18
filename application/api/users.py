@@ -1,8 +1,9 @@
-from flask_restful import Resource, reqparse
-from models.user import User
-from flask import jsonify, abort
 import datetime
+from flask import jsonify, abort
+from flask_restful import Resource, reqparse
 from sqlalchemy.exc import IntegrityError
+
+from application.models.user import User
 
 parser = reqparse.RequestParser()
 parser.add_argument('username')

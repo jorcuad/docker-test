@@ -1,8 +1,9 @@
-from flask_restful import Resource, reqparse
-from models.room import Room
-from flask import jsonify, abort
 import datetime
+from flask import jsonify, abort
+from flask_restful import Resource, reqparse
 from sqlalchemy.exc import IntegrityError
+
+from application.models.room import Room
 
 parser = reqparse.RequestParser()
 parser.add_argument('capacity')

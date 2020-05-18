@@ -1,8 +1,9 @@
-from flask_restful import Resource, reqparse
-from models.room import Room
-from models.user import User
 from flask import jsonify, abort
+from flask_restful import Resource, reqparse
 from sqlalchemy.exc import IntegrityError
+
+from application.models.room import Room
+from application.models.user import User
 
 parser = reqparse.RequestParser()
 parser.add_argument('room_id')

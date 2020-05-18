@@ -6,3 +6,4 @@ Flask-SQLAlchemy
 flask-sqlalchemy
 flask_marshmallow
 marshmallow-sqlalchemy
+python-dotenv
