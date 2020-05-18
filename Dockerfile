@@ -6,8 +6,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-RUN export FLASK_APP=wsgi.py
-
-ENTRYPOINT ["flask"]
-
-CMD ["run"]
+ENTRYPOINT ["python3", "wsgi.py"]
